@@ -1,0 +1,29 @@
+#include <QtWidgets>
+
+int main(int argc, char *argv[])
+{
+    QApplication app(argc, argv);
+    QWidget window;
+
+    QVBoxLayout layout(&window);
+
+    // Your application content goes here
+
+    QPushButton scrollToTop("Scroll to Top", &window);
+    scrollToTop.hide();
+
+    QObject::connect(&scrollToTop, &QPushButton::clicked, [&]() {
+        QScroller::scrollToTop(&window);
+    });
+
+    QObject::connect(&window, &QScrollArea::scrollValueChanged, [&](int value) {
+        if (value > 20) {
+            scrollToTop.show();
+        } else {
+            scrollToTop.hide();
+        }
+    });
+
+    window.show();
+    return app.exec();
+}
